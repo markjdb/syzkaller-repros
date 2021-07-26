@@ -1,0 +1,23 @@
+#!/bin/sh
+
+usage()
+{
+    echo "$(basename $0): <url>" >&2
+    exit 1
+}
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+set -e
+
+INDEX=0
+while [ -f repro${INDEX}.c ]; do
+    INDEX=$(($INDEX + 1))
+done
+
+FILE=repro${INDEX}.c
+fetch -o $FILE "$1"
+git add $FILE
+git commit
